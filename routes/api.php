@@ -129,7 +129,7 @@ Route::group(['middleware' => 'adminPermission', 'prefix' => 'admin'], function 
         
     ]);
 });
-
+//    test monial 
  // testomonial route 
  Route::resource("seo", SeoController::class)->only([
     'index',
