@@ -2,24 +2,27 @@
 
 namespace App\Services\Auth;
 
+use Illuminate\Support\Facades\RateLimiter;
 use App\Models\User;
 use App\Traits\Auth\LoginTraits;
 use Illuminate\Support\Facades\Hash;
 // use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
-class AuthService{
-   use LoginTraits ;
+class AuthService
+{
+    use LoginTraits;
     /* login */
 
     public static function login($request)
     {
+        return  $request->ip();
         /* check exist email */
         $credentials = $request->only('email', 'password');
         $existCredintial = User::where('email', $request->email)->first();
 
         $instance = new self();
-        $instance->EmailPasswordCheck($request, $existCredintial);
-
+        $instance->EmailPasswordCheck($request, $existCredintial); 
+        
         $token = auth()->claims([
             'id' => $existCredintial->id,
             'name' => $existCredintial->name,
@@ -35,28 +38,29 @@ class AuthService{
         ];
     }
 
-   /* store resoruce documents */
-   public static function storeDocument($request)
-   {
-       return array(
-           "name" => $request->name,
-           'email' => $request->email, 
-           "phone" => $request->phone,
-           "password" => $request->password
-           
-       );
-   }
-//    register 
-    public static function register($request){
+    /* store resoruce documents */
+    public static function storeDocument($request)
+    {
+        return array(
+            "name" => $request->name,
+            'email' => $request->email,
+            "phone" => $request->phone,
+            "password" => $request->password
+
+        );
+    }
+    //    register 
+    public static function register($request)
+    {
         /** Create the user */
         $userData = self::storeDocument($request);
         // password  hash 
         $userData['password'] = Hash::make($request->password);
-        $user =  User::create($userData); 
+        $user =  User::create($userData);
         return $user;
     }
 
-    
+
     /* create token generate exp date */
     public static function createNewToken($token)
     {

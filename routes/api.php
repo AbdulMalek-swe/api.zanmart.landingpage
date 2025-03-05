@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FrequentlyAskedController;
 use App\Http\Controllers\Admin\HomePageBlogController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -120,6 +121,12 @@ Route::group(['middleware' => 'adminPermission', 'prefix' => 'admin'], function 
         'store',
         'update',
         'destroy',
+    ]);
+    // dashboard page 
+     // project route 
+     Route::resource("dashboard",DashboardController::class)->only([
+        'index',
+        
     ]);
 });
 
